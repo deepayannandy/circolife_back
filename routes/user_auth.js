@@ -83,15 +83,13 @@ router.get('/:mob' ,getUser, (req,res,)=>{
 
 //get all user
 router.get('/',async (req,res)=>{
-    const user=await usermodel.findOne({_id:req.tokendata._id});
-    if(!user) return res.status(400).send({"message":"User dose not exist!"});
-    console.log(user.UserBranch)
-    try{
-        const users=await usermodel.find({UserBranch:user.UserBranch});
-        res.json(users)
-    }catch(error){
-        res.status(500).json({message: error.message})
-    }
+    res.status(500).json({message: "Access Denied!"})
+    // try{
+    //     const users=await usermodel.find({UserBranch:user.UserBranch});
+    //     res.json(users)
+    // }catch(error){
+    //     res.status(500).json({message: error.message})
+    // }
 })
 //get all user without token
 router.get('/getall/get',async (req,res)=>{
