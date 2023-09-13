@@ -1,10 +1,11 @@
 const express = require("express")
 const router= express.Router()
 const usermodel=require("../models/userModel")
-const validator= require("../validators/validation")
+const ordermodel=require("../models/orderModel")
 const nodemailer = require('nodemailer');
 const mongodb=require("mongodb");
 require("dotenv").config()
+
 process.env.TZ = "Asia/Calcutta";
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -16,25 +17,18 @@ const transporter = nodemailer.createTransport({
   host:"smtp.gmail.com"
 });
 
-const verifie_token= require("../validators/verifyToken")
-
 //create user
-router.post('/register',async (req,res)=>{
+router.post('/',async (req,res)=>{
     let ts =new Date();
-    //validate the data
-    const valid=validator.resistration_validation(req.body);
-    if(valid.error){
-        return res.status(400).send(valid.error.details[0].message);
-    }
-    const email_exist=await usermodel.findOne({email:req.body.email});
-    if(email_exist) return res.status(400).send({"message":"Email already exist!"});
-    
     console.log(ts.toString());
-    const user= new usermodel({
-        Fullname:req.body.Fullname,
+    let order_user =usermodel.findOne({
+        userid:req.body.userid
+    })
+
+    const order= new ordermodel({
+        Fullname:order_user.Fullname,
         mobile:req.body.mobile,
         email:req.body.email,
-        onBoardingDate:ts,
         userid:req.body.userid,
         longitude:req.body.longitude,
         latitude:req.body.latitude,
@@ -44,13 +38,10 @@ router.post('/register',async (req,res)=>{
         pincode:req.body.pincode,
         area:req.body.area,
         flat:req.body.flat,
-        kycStatus:false,
-        kycid:"",
-        devices:[],
-        orderStatus:false,
+        
     })
     try{
-        const newUser=await user.save()
+        const newUser=await order.save()
         var regestereduserMail = {
             from: 'appsdny@gmail.com',
             to: req.body.email,

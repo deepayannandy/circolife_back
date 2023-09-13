@@ -1,6 +1,6 @@
 const mongoos=require("mongoose")
 
-const userSchema= new mongoos.Schema({
+const orderSchema= new mongoos.Schema({
     userid:{
         type:String,
         required:true
@@ -49,26 +49,34 @@ const userSchema= new mongoos.Schema({
         type:String,
         required:true
     },
-    kycStatus:{
-        type:Boolean,
+    Status:{
+        type:String,
         required:true
     },
-    orderStatus:{
-        type:Boolean,
-        required:true
-    },
-    onBoardingDate:{
+    orderingDate:{
         type:Date,
         required:false
     },
-    kycid:{
+    plan_year:{
+        type:Number,
+        required:false
+    },
+    paymentId:{
         type:String,
         required:false
     },
-    devices:{
-        type:Array,
+    payment_amount:{
+        type:Number,
         required:false
     },
+    completionDate:{
+        type:Boolean,
+        required:false
+    },
+    is_kyc_neede:{
+        type:Boolean,
+        required:true
+    }
 })
 
-module.exports=mongoos.model('User',userSchema )
+module.exports=mongoos.model('Order',orderSchema )

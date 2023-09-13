@@ -20,10 +20,10 @@ app.use(express.json())
 app.use(cors());
 
 const userRouter= require("./routes/user_auth")
-
+const addressRouter= require("./routes/address")
 
 app.use("/api/user",userRouter)
-
+app.use("/api/address",addressRouter)
 
 app.listen(6622,()=>{
     console.log("Http Server is listning!")
