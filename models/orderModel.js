@@ -57,6 +57,14 @@ const orderSchema= new mongoos.Schema({
         type:Date,
         required:false
     },
+    appointmentDate:{
+        type:Date,
+        required:false
+    },
+    model:{
+        type:String,
+        required:false
+    },
     plan_year:{
         type:Number,
         required:false
@@ -67,10 +75,6 @@ const orderSchema= new mongoos.Schema({
     },
     payment_amount:{
         type:Number,
-        required:false
-    },
-    completionDate:{
-        type:Boolean,
         required:false
     },
     is_kyc_neede:{

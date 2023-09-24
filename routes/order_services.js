@@ -19,16 +19,20 @@ const transporter = nodemailer.createTransport({
 
 //create user
 router.post('/',async (req,res)=>{
-    let ts =new Date();
-    console.log(ts.toString());
-    let order_user =usermodel.findOne({
+    console.log(req.body.userid)
+    let order_user =await usermodel.findOne({
         userid:req.body.userid
     })
-
+    if (order_user==null){
+        res.status(400).json({message:"User not available"})
+    }
+    else{
+        console.log(order_user)
+    }
     const order= new ordermodel({
         Fullname:order_user.Fullname,
-        mobile:req.body.mobile,
-        email:req.body.email,
+        mobile:order_user.mobile,
+        email:order_user.email,
         userid:req.body.userid,
         longitude:req.body.longitude,
         latitude:req.body.latitude,
@@ -38,28 +42,36 @@ router.post('/',async (req,res)=>{
         pincode:req.body.pincode,
         area:req.body.area,
         flat:req.body.flat,
-        
+        Status:"Ordered",
+        orderingDate:req.body.orderingDate,
+        appointmentDate:req.body.appointmentDate,
+        model:req.body.model,
+        plan_year:req.body.plan_year,
+        paymentId:req.body.paymentId,
+        payment_amount:req.body.payment_amount,
+        is_kyc_neede:order_user.kycStatus==true?false:true,
+
     })
     try{
-        const newUser=await order.save()
-        var regestereduserMail = {
-            from: 'appsdny@gmail.com',
-            to: req.body.email,
-            subject: 'Hello👋 Welcome to CircoLife ',
-            text: `Hi ${req.body.Fullname},
-Congratulations on your successful registration at CircoLife. 
-Thank you 
-Team CircoLife`      
-          };
-          transporter.sendMail(regestereduserMail, function(error, info){
-            if (error) {
-              console.log(error);
-            } else {
-              console.log('Email sent: ' + info.response);
-            }
-          });
+        const newOrder=await order.save()
+//         var regestereduserMail = {
+//             from: 'appsdny@gmail.com',
+//             to: req.body.email,
+//             subject: 'Hello👋 Welcome to CircoLife ',
+//             text: `Hi ${req.body.Fullname},
+// Congratulations on your successful registration at CircoLife. 
+// Thank you 
+// Team CircoLife`      
+//           };
+//           transporter.sendMail(regestereduserMail, function(error, info){
+//             if (error) {
+//               console.log(error);
+//             } else {
+//               console.log('Email sent: ' + info.response);
+//             }
+//           });
         
-        res.status(201).json({"_id":newUser.id})
+        res.status(201).json({"_id":newOrder.id})
         
     }
     catch(error){
@@ -68,26 +80,14 @@ Team CircoLife`
 })
 
 
-//get a user by mobile number
-router.get('/:mob' ,getUser, (req,res,)=>{
-    res.send(res.user)
-})
 
-//get all user
-router.get('/',async (req,res)=>{
-    res.status(500).json({message: "Access Denied!"})
-    // try{
-    //     const users=await usermodel.find({UserBranch:user.UserBranch});
-    //     res.json(users)
-    // }catch(error){
-    //     res.status(500).json({message: error.message})
-    // }
-})
-//get all user without token
-router.get('/getall/get',async (req,res)=>{
+
+//get all orders by user
+router.get('/getbyuser/:uid',async (req,res)=>{
+    console.log(req.params.uid)
     try{
-        const users=await usermodel.find();
-        res.json(users)
+        const orders=await ordermodel.find({userid:req.params.uid});
+        res.json(orders)
     }catch(error){
         res.status(500).json({message: error.message})
     }
@@ -95,7 +95,7 @@ router.get('/getall/get',async (req,res)=>{
 
 
 //update user
-router.patch('/:id',verifie_token, getUser,async(req,res)=>{
+router.patch('/:id', getUser,async(req,res)=>{
     console.log(req.tokendata.UserType);
     if(req.body.Fullname!=null){
         res.user.Fullname=req.body.Fullname;
