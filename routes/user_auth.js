@@ -104,8 +104,8 @@ router.get('/getall/get',async (req,res)=>{
 
 
 //update user
-router.patch('/:id',verifie_token, getUser,async(req,res)=>{
-    console.log(req.tokendata.UserType);
+router.patch('/:id', getUser,async(req,res)=>{
+    console.log(res.user.Fullname)
     if(req.body.Fullname!=null){
         res.user.Fullname=req.body.Fullname;
     }
@@ -114,6 +114,12 @@ router.patch('/:id',verifie_token, getUser,async(req,res)=>{
     }
     if(req.body.devices!=[] && req.body.devices!=null){
         res.user.devices= res.user.devices.push(req.body.devices);
+    }
+    if(req.body.kycid!=null){
+        res.user.kycid=req.body.kycid;
+    }
+    if(req.body.kycStatus!=null){
+        res.user.kycStatus=req.body.kycStatus;
     }
     try{
         const newUser=await res.user.save()
@@ -142,11 +148,11 @@ router.delete("/:id",async (req,res)=>{
 async function getUser(req,res,next){
     let user
     try{
-        user=await usermodel.findOne({mobile: req.params.mob})
+        user=await usermodel.findById(req.params.id)
         if(user==null){
             return res.status(404).json({message:"User unavailable!"})
         }
-
+        
     }catch(error){
         res.status(500).json({message: error.message})
     }

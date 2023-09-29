@@ -22,10 +22,12 @@ app.use(cors());
 const userRouter= require("./routes/user_auth")
 const addressRouter= require("./routes/address")
 const ordersRouter= require("./routes/order_services")
+const notificationRouter= require("./routes/notifications")
 
 app.use("/api/user",userRouter)
 app.use("/api/address",addressRouter)
 app.use("/api/orders",ordersRouter)
+app.use("/api/notification",notificationRouter)
 
 app.listen(6622,()=>{
     console.log("Http Server is listning!")

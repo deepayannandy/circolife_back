@@ -55,7 +55,7 @@ const userSchema= new mongoos.Schema({
     },
     orderStatus:{
         type:Boolean,
-        required:true
+        required:false
     },
     onBoardingDate:{
         type:Date,
