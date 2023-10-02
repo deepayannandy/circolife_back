@@ -78,13 +78,15 @@ Team CircoLife`
 
 
 //get a user by mobile number
-router.get('/:mob' ,getUser, async (req,res,)=>{
+router.get('/:mob' , async (req,res,)=>{
     try{
         user=await usermodel.findOne( {mobile: req.params.mob})
         if(user==null){
             return res.status(404).json({message:"User unavailable!"})
         }
+        res.status(201).json(user)
         console.log(user)
+
     }catch(error){
         res.status(500).json({message: error.message})
     }
