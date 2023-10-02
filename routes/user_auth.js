@@ -78,8 +78,16 @@ Team CircoLife`
 
 
 //get a user by mobile number
-router.get('/:mob' ,getUser, (req,res,)=>{
-    res.send(res.user)
+router.get('/:mob' ,getUser, async (req,res,)=>{
+    try{
+        user=await usermodel.findOne( {mobile: req.params.mob})
+        if(user==null){
+            return res.status(404).json({message:"User unavailable!"})
+        }
+        console.log(user)
+    }catch(error){
+        res.status(500).json({message: error.message})
+    }
 })
 
 //get all user
@@ -105,7 +113,7 @@ router.get('/getall/get',async (req,res)=>{
 
 //update user
 router.patch('/:id', getUser,async(req,res)=>{
-    console.log(res.user.Fullname)
+    console.log()
     if(req.body.Fullname!=null){
         res.user.Fullname=req.body.Fullname;
     }
@@ -152,7 +160,7 @@ async function getUser(req,res,next){
         if(user==null){
             return res.status(404).json({message:"User unavailable!"})
         }
-        
+        console.log(user)
     }catch(error){
         res.status(500).json({message: error.message})
     }
