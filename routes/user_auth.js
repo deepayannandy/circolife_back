@@ -45,7 +45,6 @@ router.post('/register',async (req,res)=>{
         area:req.body.area,
         flat:req.body.flat,
         kycStatus:false,
-        kycid:"",
         devices:[],
         orderStatus:false,
     })
@@ -125,8 +124,9 @@ router.patch('/:id', getUser,async(req,res)=>{
     if(req.body.devices!=[] && req.body.devices!=null){
         res.user.devices= res.user.devices.push(req.body.devices);
     }
-    if(req.body.kycid!=null){
-        res.user.kycid=req.body.kycid;
+    if(req.body.kycdata!=null){
+        console.log(req.body.kycdata)
+        res.user.kycdata=req.body.kycdata;
     }
     if(req.body.kycStatus!=null){
         res.user.kycStatus=req.body.kycStatus;

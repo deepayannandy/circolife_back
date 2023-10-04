@@ -1,3 +1,4 @@
+const { object } = require("joi")
 const mongoos=require("mongoose")
 
 const userSchema= new mongoos.Schema({
@@ -61,8 +62,8 @@ const userSchema= new mongoos.Schema({
         type:Date,
         required:false
     },
-    kycid:{
-        type:String,
+    kycdata:{
+        type:Object,
         required:false
     },
     devices:{
