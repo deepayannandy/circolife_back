@@ -1,6 +1,7 @@
 const express = require("express")
 const router= express.Router()
 const usermodel=require("../models/userModel")
+const addressmodel=require("../models/addressModel")
 const validator= require("../validators/validation")
 const nodemailer = require('nodemailer');
 const mongodb=require("mongodb");
@@ -48,8 +49,21 @@ router.post('/register',async (req,res)=>{
         devices:[],
         orderStatus:false,
     })
+    const address = new addressmodel({
+        userid:req.body.userid,
+        longitude:req.body.longitude,
+        latitude:req.body.latitude,
+        address:req.body.address,
+        state:req.body.state,
+        city:req.body.city,
+        pincode:req.body.pincode,
+        area:req.body.area,
+        flat:req.body.flat,
+    })
     try{
         const newUser=await user.save()
+        const newAddress= await address.save()
+        console.log(newAddress)
         var regestereduserMail = {
             from: 'appsdny@gmail.com',
             to: req.body.email,
