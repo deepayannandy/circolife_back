@@ -68,11 +68,17 @@ router.post('/register',async (req,res)=>{
             from: 'appsdny@gmail.com',
             to: req.body.email,
             subject: 'Hello👋 Welcome to CircoLife ',
-            text: `Hi ${req.body.Fullname},
-Congratulations on your successful registration at CircoLife. 
-Thank you 
-Team CircoLife`      
-          };
+//             text: `Hi ${req.body.Fullname},
+// Congratulations on your successful registration at CircoLife. 
+// Thank you 
+// Team CircoLife`     
+            html: '<img src="cid:unique@circolife.com"/>',
+            attachments: [{
+                filename: 'welcome.jpeg',
+                path: './assets/welcome.jpeg',
+                cid: 'unique@circolife.com' 
+            }] 
+        }
           transporter.sendMail(regestereduserMail, function(error, info){
             if (error) {
               console.log(error);
