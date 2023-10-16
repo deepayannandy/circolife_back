@@ -2,6 +2,7 @@ const express = require("express")
 const router= express.Router()
 const usermodel=require("../models/userModel")
 const ordermodel=require("../models/orderModel")
+const notificationsmodel=require("../models/notificationModel")
 const nodemailer = require('nodemailer');
 const mongodb=require("mongodb");
 require("dotenv").config()
@@ -52,8 +53,17 @@ router.post('/',async (req,res)=>{
         is_kyc_neede:order_user.kycStatus==true?false:true,
 
     })
+    const notification= new notificationsmodel({
+        userid:req.body.userid,
+        title:"Congratulation you booking is confirmed 😊",
+        body:"Sir we are processing your order and it will be delivered and installed",
+        isread:false,
+        catagory:"support",
+        date:req.body.orderingDate,
+    })
     try{
         const newOrder=await order.save()
+        let newNotification= await notification.save()
 //         var regestereduserMail = {
 //             from: 'appsdny@gmail.com',
 //             to: req.body.email,
