@@ -134,12 +134,16 @@ router.get('/getall/get',async (req,res)=>{
 
 //update user
 router.patch('/:id', getUser,async(req,res)=>{
-    console.log()
+    // console.log(req.body.Fullname);
+    // console.log(res.user);
     if(req.body.Fullname!=null){
         res.user.Fullname=req.body.Fullname;
     }
     if(req.body.email!=null){
         res.user.email=req.body.email;
+    }
+    if(req.body.profileimage!=null){
+        res.user.profileimage=req.body.profileimage;
     }
     if(req.body.devices!=[] && req.body.devices!=null){
         res.user.devices= res.user.devices.push(req.body.devices);
@@ -177,12 +181,14 @@ router.delete("/:id",async (req,res)=>{
 //middleware
 async function getUser(req,res,next){
     let user
+    // console.log(req.params.id);
     try{
         user=await usermodel.findById(req.params.id)
+        // console.log(user);
         if(user==null){
             return res.status(404).json({message:"User unavailable!"})
         }
-        console.log(user)
+        // console.log(user)
     }catch(error){
         res.status(500).json({message: error.message})
     }

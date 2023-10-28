@@ -70,6 +70,10 @@ const userSchema= new mongoos.Schema({
         type:Array,
         required:false
     },
+    profileimage:{
+        type:String,
+        required:false
+    }
 })
 
 module.exports=mongoos.model('User',userSchema )
