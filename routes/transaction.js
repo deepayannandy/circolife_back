@@ -10,10 +10,12 @@ process.env.TZ = "Asia/Calcutta";
 router.post('/',async (req,res)=>{
     let ts =new Date();
     console.log(ts.toString());
-
     const trans= new transaction({
-        response:req.body.response,
-        time:ts.toString(),
+        userid:req.body.userid,
+        success:req.body.success,
+        code:req.body.code,
+        data:req.body.data,
+        TimeStamp:ts,
     })
     try{
         let newTrans= await trans.save()
