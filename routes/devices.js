@@ -19,6 +19,7 @@ router.post('/',async (req,res)=>{
         receiversName:req.body.receiversName,
         receiversNumber:req.body.receiversNumber,
         receiversImage:req.body.receiversImage,
+        sendersImage:req.body.sendersImage,
     })
     try{
         let newDevice= await newdevices.save()
@@ -40,6 +41,14 @@ router.get('/',async (req,res)=>{
 router.get('/:id',async (req,res)=>{
     try{
         const deviceS=await devices.find({userid: req.params.id});
+        res.json(deviceS)
+    }catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.get('/shared/:id',async (req,res)=>{
+    try{
+        const deviceS=await devices.find({receiversid: req.params.id});
         res.json(deviceS)
     }catch(error){
         res.status(500).json({message: error.message})

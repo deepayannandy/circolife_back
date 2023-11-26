@@ -42,6 +42,10 @@ const devicesSchema= new mongoos.Schema({
         type:String,
         required:false
     },
+    sendersImage:{
+        type:String,
+        required:false
+    },
 })
 
 module.exports=mongoos.model('Devices',devicesSchema )
