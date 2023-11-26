@@ -20,7 +20,7 @@ router.post('/',async (req,res)=>{
         summery:req.body.summery,
         type:req.body.type,
         status:req.body.status,
-        TimeStamp:req.body.TimeStamp,
+        TimeStamp:ts,
     })
     try{
         let newquer= await quer.save()
