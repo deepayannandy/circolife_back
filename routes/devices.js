@@ -17,6 +17,8 @@ router.post('/',async (req,res)=>{
         receiversid:req.body.receiversid,
         sendersName:req.body.sendersName,
         receiversName:req.body.receiversName,
+        receiversNumber:req.body.receiversNumber,
+        receiversImage:req.body.receiversImage,
     })
     try{
         let newDevice= await newdevices.save()

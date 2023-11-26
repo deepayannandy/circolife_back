@@ -34,6 +34,14 @@ const devicesSchema= new mongoos.Schema({
         type:String,
         required:false
     },
+    receiversNumber:{
+        type:String,
+        required:false
+    },
+    receiversImage:{
+        type:String,
+        required:false
+    },
 })
 
 module.exports=mongoos.model('Devices',devicesSchema )
