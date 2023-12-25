@@ -2,6 +2,7 @@ const express = require("express")
 const router= express.Router()
 const query=require("../models/queryModel")
 const mongodb=require("mongodb");
+const notificationsmodel=require("../models/notificationModel")
 require("dotenv").config()
 
 process.env.TZ = "Asia/Calcutta";
@@ -21,10 +22,20 @@ router.post('/',async (req,res)=>{
         type:req.body.type,
         status:req.body.status,
         TimeStamp:ts,
+        deviceid:req.body.deviceid,
+    })
+    const notification= new notificationsmodel({
+        userid:req.body.userid,
+        title:"We have received your request!",
+        body:"One of our agent will contact with you shortly.",
+        isread:false,
+        catagory:"Query",
+        date:ts,
     })
     try{
         let newquer= await quer.save()
-        res.status(201).json({"_id":newquer.id})
+        let newNotification= await notification.save()
+        res.status(201).json({"_id":newquer.id,"notification_id":newNotification.id})
         
     }
     catch(error){

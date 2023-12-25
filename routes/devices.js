@@ -2,6 +2,7 @@ const express = require("express")
 const router= express.Router()
 const devices=require("../models/deviceModel")
 const mongodb=require("mongodb");
+const notificationsmodel=require("../models/notificationModel")
 require("dotenv").config()
 
 process.env.TZ = "Asia/Calcutta";
@@ -21,9 +22,18 @@ router.post('/',async (req,res)=>{
         receiversImage:req.body.receiversImage,
         sendersImage:req.body.sendersImage,
     })
+    const notification=  new notificationsmodel({
+        userid:req.body.isShared==true?req.body.receiversid:req.body.userid,
+        title: req.body.isShared==true?req.body.sendersName+" Share one device with you.":"AC successfully added 🎉",
+        body:req.body.isShared==true?"You can now add the device from your homescreen.": req.body.deviceName+' is successfully linked with your account',
+        isread:false,
+        catagory:"support",
+        date:ts,
+    })
     try{
         let newDevice= await newdevices.save()
-        res.status(201).json({"_id":newDevice.id})
+        let newNotification= await notification.save()
+        res.status(201).json({"_id":newDevice.id,"notification_id":newNotification.id})
         
     }
     catch(error){

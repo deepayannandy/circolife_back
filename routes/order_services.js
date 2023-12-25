@@ -3,6 +3,7 @@ const router= express.Router()
 const usermodel=require("../models/userModel")
 const ordermodel=require("../models/orderModel")
 const notificationsmodel=require("../models/notificationModel")
+const Device_payment_model=require("../models/devicePaymentsModel")
 const nodemailer = require('nodemailer');
 const mongodb=require("mongodb");
 require("dotenv").config()
@@ -27,9 +28,6 @@ router.post('/',async (req,res)=>{
     if (order_user==null){
         res.status(400).json({message:"User not available"})
     }
-    else{
-        console.log(order_user)
-    }
     const order= new ordermodel({
         Fullname:order_user.Fullname,
         mobile:order_user.mobile,
@@ -51,6 +49,7 @@ router.post('/',async (req,res)=>{
         paymentId:req.body.paymentId,
         payment_amount:req.body.payment_amount,
         is_kyc_neede:order_user.kycStatus==true?false:true,
+        monthlyPayment_amount:req.body.monthlyPayment_amount,
 
     })
     const notification= new notificationsmodel({
@@ -64,22 +63,27 @@ router.post('/',async (req,res)=>{
     try{
         const newOrder=await order.save()
         let newNotification= await notification.save()
-//         var regestereduserMail = {
-//             from: 'appsdny@gmail.com',
-//             to: req.body.email,
-//             subject: 'Hello👋 Welcome to CircoLife ',
-//             text: `Hi ${req.body.Fullname},
-// Congratulations on your successful registration at CircoLife. 
-// Thank you 
-// Team CircoLife`      
-//           };
-//           transporter.sendMail(regestereduserMail, function(error, info){
-//             if (error) {
-//               console.log(error);
-//             } else {
-//               console.log('Email sent: ' + info.response);
-//             }
-//           });
+        var regestereduserMail = {
+            from: 'appsdny@gmail.com',
+            to: req.body.email,
+            subject: 'Wohoo Order Placed Successfully 🎉 ',
+            text: `Hello ${req.body.Fullname},
+Congratulations on you have successful placed an order at CircoLife. 
+
+Your ${req.body.model} AC will be installed by ${req.body.appointmentDate.split("T")[0]}
+Transaction Id: ${req.body.paymentId}
+Order Id: ${newOrder.id}.
+
+Regards
+Team CircoLife`      
+          };
+          transporter.sendMail(regestereduserMail, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
         
         res.status(201).json({"_id":newOrder.id})
         
@@ -105,20 +109,22 @@ router.get('/getbyuser/:uid',async (req,res)=>{
 
 
 //update user
-router.patch('/:id', getUser,async(req,res)=>{
-    console.log(req.tokendata.UserType);
-    if(req.body.Fullname!=null){
-        res.user.Fullname=req.body.Fullname;
-    }
-    if(req.body.email!=null){
-        res.user.email=req.body.email;
-    }
-    if(req.body.devices!=[] && req.body.devices!=null){
-        res.user.devices= res.user.devices.push(req.body.devices);
-    }
+router.patch('/completeorder/:id', getOrder,async(req,res)=>{
+    res.order.Status=req.body.Status;
+    res.order.payment_count=(res.order.plan_year*12)-1;
+    res.order.deviceId=req.body.deviceId;
+    const devicepayment= new Device_payment_model({
+        orderid:res.order._id,
+        deviceid:req.body.deviceId,
+        subsEndDate:req.body.subsEndDate,
+        ispaid:false,
+        paidAmount:res.order.monthlyPayment_amount,
+        paymentcount:2,
+    })
     try{
-        const newUser=await res.user.save()
-        res.status(201).json({"_id":newUser.id})
+        const newOrder=await res.order.save()
+        const newDevicePayment= await devicepayment.save()
+        res.status(201).json({"Update_id":newOrder.id,"DivPay_id":newDevicePayment.id})
     }catch(error){
         res.status(500).json({message: error.message})
     }
@@ -126,13 +132,13 @@ router.patch('/:id', getUser,async(req,res)=>{
 
 
 router.delete("/:id",async (req,res)=>{
-    console.log("Deleting user: "+req.params.id)
-    user=await usermodel.findById(req.params.id)
+    console.log("Deleting order: "+req.params.id)
+    user=await ordermodel.findById(req.params.id)
         if(user==null){
-            return res.status(404).json({message:"User unavailable!"})
+            return res.status(404).json({message:"Order unavailable!"})
         }
     try{
-        const reasult= await usermodel.deleteOne({_id: new mongodb.ObjectId(req.params.id)})
+        const reasult= await ordermodel.deleteOne({_id: new mongodb.ObjectId(req.params.id)})
         res.json(reasult)
     }catch(error){
         res.status(500).json({message: error.message})
@@ -140,18 +146,18 @@ router.delete("/:id",async (req,res)=>{
 })
 
 //middleware
-async function getUser(req,res,next){
-    let user
+async function getOrder(req,res,next){
+    let order
     try{
-        user=await usermodel.findOne({mobile: req.params.mob})
-        if(user==null){
-            return res.status(404).json({message:"User unavailable!"})
+        order=await ordermodel.findById(req.params.id)
+        if(order==null){
+            return res.status(404).json({message:"Order unavailable!"})
         }
 
     }catch(error){
         res.status(500).json({message: error.message})
     }
-    res.user=user
+    res.order=order
     next()
 }
 module.exports=router

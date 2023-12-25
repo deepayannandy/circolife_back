@@ -26,6 +26,7 @@ const notificationRouter= require("./routes/notifications")
 const transactionRouter= require("./routes/transaction")
 const deviceRouter= require("./routes/devices")
 const queryRouter= require("./routes/query")
+const devicePaymentsRouter= require("./routes/devicePayments")
 
 app.use("/api/user",userRouter)
 app.use("/api/address",addressRouter)
@@ -34,6 +35,7 @@ app.use("/api/notification",notificationRouter)
 app.use("/api/transaction",transactionRouter)
 app.use("/api/devices",deviceRouter)
 app.use("/api/query",queryRouter)
+app.use("/api/devicePayments",devicePaymentsRouter)
 
 app.listen(6622,()=>{
     console.log("Http Server is listning!")

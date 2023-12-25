@@ -20,7 +20,7 @@ const querySchema= new mongoos.Schema({
     },
     image:{
         type:String,
-        required:true
+        required:false
     },
     subject:{
         type:String,
@@ -37,6 +37,10 @@ const querySchema= new mongoos.Schema({
     status:{
         type:Boolean,
         required:true
+    },
+    deviceid:{
+        type:String,
+        required:false
     },
     TimeStamp:{
         type:Date,

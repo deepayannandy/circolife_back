@@ -77,9 +77,21 @@ const orderSchema= new mongoos.Schema({
         type:Number,
         required:false
     },
+    monthlyPayment_amount:{
+        type:Number,
+        required:false
+    },
     is_kyc_neede:{
         type:Boolean,
         required:true
+    },
+    payment_count:{
+        type:Number,
+        required:false
+    },
+    deviceId:{
+        type:String,
+        required:false
     }
 })
 
