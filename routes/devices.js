@@ -9,6 +9,7 @@ process.env.TZ = "Asia/Calcutta";
 
 //create transaction
 router.post('/',async (req,res)=>{
+    let ts =new Date();
     const newdevices= new devices({
         userid:req.body.userid,
         deviceid:req.body.deviceid,
