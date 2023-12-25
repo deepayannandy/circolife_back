@@ -28,7 +28,7 @@ router.post('/',async (req,res)=>{
         title: req.body.isShared==true?req.body.sendersName+" Share one device with you.":"AC successfully added 🎉",
         body:req.body.isShared==true?"You can now add the device from your homescreen.": req.body.deviceName+' is successfully linked with your account',
         isread:false,
-        catagory:"support",
+        catagory:"Device",
         date:ts,
     })
     try{
