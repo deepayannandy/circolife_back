@@ -16,6 +16,7 @@ const schema=joi.object().keys({
     pincode:joi.string().required(),
     area:joi.string().required(),
     flat:joi.string().required(),
+    refferid:joi.string(),
 });
 return schema.validate(data);
 }
