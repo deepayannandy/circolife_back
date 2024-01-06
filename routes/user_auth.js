@@ -48,6 +48,7 @@ router.post('/register',async (req,res)=>{
         kycStatus:false,
         devices:[],
         orderStatus:false,
+        refferid:req.body.refferid,
     })
     const address = new addressmodel({
         userid:req.body.userid,
@@ -67,11 +68,7 @@ router.post('/register',async (req,res)=>{
         var regestereduserMail = {
             from: 'appsdny@gmail.com',
             to: req.body.email,
-            subject: 'Hello👋 Welcome to CircoLife ',
-//             text: `Hi ${req.body.Fullname},
-// Congratulations on your successful registration at CircoLife. 
-// Thank you 
-// Team CircoLife`     
+            subject: 'Hello👋 Welcome to CircoLife ', 
             html: '<img src="cid:unique@circolife.com"/>',
             attachments: [{
                 filename: 'welcome.jpeg',
@@ -154,6 +151,12 @@ router.patch('/:id', getUser,async(req,res)=>{
     }
     if(req.body.kycStatus!=null){
         res.user.kycStatus=req.body.kycStatus;
+    }
+    if(req.body.gst!=null){
+        res.user.gst=req.body.gst;
+    }
+    if(req.body.companyname!=null){
+        res.user.companyname=req.body.companyname;
     }
     try{
         const newUser=await res.user.save()

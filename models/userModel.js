@@ -73,6 +73,18 @@ const userSchema= new mongoos.Schema({
     profileimage:{
         type:String,
         required:false
+    },
+    refferid:{
+        type:String,
+        required:false
+    },
+    gst:{
+        type:String,
+        required:false
+    },
+    companyname:{
+        type:String,
+        required:false
     }
 })
 
