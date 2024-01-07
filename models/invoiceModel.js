@@ -68,7 +68,7 @@ const invoiceSchema= new mongoos.Schema({
     },
     companyname:{
         type:String,
-        required:true
+        required:false
     }
 })
 

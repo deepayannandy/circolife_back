@@ -52,4 +52,20 @@ router.get('/:uid',async(req,res)=>{
         res.status(400).json({message:error.message})
     }
 })
+router.get('/byorder/:oid',async(req,res)=>{
+    console.log(req.params.uid)
+    let inv
+    try{
+        inv=await invoiceModel.find({"orderid":req.params.oid})
+        if(inv==null){
+            return res.status(404).json({message:"no invoice availabe!"})
+        }
+        else{
+            return res.status(200).json(inv);
+        }   
+    }
+    catch(error){
+        res.status(400).json({message:error.message})
+    }
+})
 module.exports=router
