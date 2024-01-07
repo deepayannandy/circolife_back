@@ -92,6 +92,18 @@ const orderSchema= new mongoos.Schema({
     deviceId:{
         type:String,
         required:false
+    },
+    gst:{
+        type:String,
+        required:false
+    },
+    billingaddress:{
+        type:String,
+        required:false
+    },
+    companyname:{
+        type:String,
+        required:false
     }
 })
 

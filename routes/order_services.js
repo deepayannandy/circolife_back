@@ -50,6 +50,9 @@ router.post('/',async (req,res)=>{
         payment_amount:req.body.payment_amount,
         is_kyc_neede:order_user.kycStatus==true?false:true,
         monthlyPayment_amount:req.body.monthlyPayment_amount,
+        companyname:req.body.companyname,
+        gst:req.body.gst,
+        billingaddress:req.body.billingaddress
 
     })
     const notification= new notificationsmodel({
