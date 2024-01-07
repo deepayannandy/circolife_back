@@ -25,6 +25,7 @@ router.post('/',async (req,res)=>{
         transactionId:req.body.transactionId,
         type:req.body.type,
         orderid:req.body.orderid,
+        companyname:req.body.companyname
     })
     try{
         let newInv= await inv.save()

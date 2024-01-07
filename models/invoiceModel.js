@@ -29,7 +29,8 @@ const invoiceSchema= new mongoos.Schema({
     recipientname:{
         type:String,
         required:true
-    },recipientshippingaddress:{
+    },
+    recipientshippingaddress:{
         type:String,
         required:true
     },
@@ -65,6 +66,10 @@ const invoiceSchema= new mongoos.Schema({
         type:String,
         required:true
     },
+    companyname:{
+        type:String,
+        required:true
+    }
 })
 
 module.exports=mongoos.model('Invoice',invoiceSchema )
