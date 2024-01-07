@@ -9,6 +9,7 @@ process.env.TZ = "Asia/Calcutta";
 //create transaction
 router.post('/',async (req,res)=>{
     const inv= new invoiceModel({
+        invoiceName:req.body.invoiceName,
         userid:req.body.userid,
         invoiceId:req.body.invoiceId,
         invoiceDate:req.body.invoiceDate,

@@ -2,6 +2,10 @@ const { bool, object } = require("joi")
 const mongoos=require("mongoose")
 
 const invoiceSchema= new mongoos.Schema({
+    invoiceName:{
+        type:String,
+        required:true
+    },
     userid:{
         type:String,
         required:true
