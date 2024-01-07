@@ -6,6 +6,10 @@ const invoiceSchema= new mongoos.Schema({
         type:String,
         required:true
     },
+    orderid:{
+        type:String,
+        required:true
+    },
     userid:{
         type:String,
         required:true
