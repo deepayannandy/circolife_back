@@ -57,6 +57,27 @@ router.get('/:id',async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+router.get('/deviceStatus/:did&:uid',async (req,res)=>{
+    // console.log(req.params.did)
+    // console.log(req.params.uid)
+    let device
+    try{
+        const deviceS=await devices.find({deviceid: req.params.did});
+        if(deviceS.length==0)
+        {
+           return res.status(200).json({"message":"unregistered"})
+        }
+       for(device in deviceS){
+        console.log(deviceS[device].userid)
+        if(deviceS[device].userid==req.params.uid){
+            return  res.status(200).json({"message":"Belong to the user"})
+        }
+       }
+       return res.status(401).json({"message":"Not belong to this user"})
+    }catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
 router.get('/shared/:id',async (req,res)=>{
     try{
         const deviceS=await devices.find({receiversid: req.params.id});
