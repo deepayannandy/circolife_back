@@ -40,18 +40,26 @@ router.get('/:uid',async(req,res)=>{
     console.log(req.params.uid)
     let inv
     try{
-        inv=await invoiceModel.find({"userid":req.params.uid})
+        if(req.params.uid=="sendmeallbills")
+        {
+            inv=await invoiceModel.find()
+            console.log("sending all")
+        }
+        else
+            inv=await invoiceModel.find({"userid":req.params.uid})
+
         if(inv==null){
             return res.status(404).json({message:"no invoice availabe!"})
         }
-        else{
-            return res.status(200).json(inv);
-        }   
+        
+        return res.status(200).json(inv);
+        
     }
     catch(error){
         res.status(400).json({message:error.message})
     }
 })
+
 router.get('/byorder/:oid',async(req,res)=>{
     console.log(req.params.uid)
     let inv
