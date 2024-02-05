@@ -1,17 +1,31 @@
 const express = require("express")
 const router= express.Router()
 const invoiceModel=require("../models/invoiceModel")
+const companyConsts=require("../models/constsModel")
 const mongodb=require("mongodb");
 require("dotenv").config()
 process.env.TZ = "Asia/Calcutta";
-
+const zeroPad = (num, places) => String(num).padStart(places, '0')
 
 //create transaction
 router.post('/',async (req,res)=>{
+    let invoicename;
+    let cconst;
+    if(req.body.type=="Inv"){
+        cconst=await companyConsts.findOne({"env":"Prod"})
+        if(cconst==null)
+            return res.status(404).json({message:"Company Constant Error"})
+        invoicename="S/"+zeroPad(cconst.invoice_count, 3)+"/"+cconst.invoice_prefix;
+        console.log(invoicename)
+    }
+    else{
+        invoicename=req.body.invoiceId;
+    }
+
     const inv= new invoiceModel({
         invoiceName:req.body.invoiceName,
         userid:req.body.userid,
-        invoiceId:req.body.invoiceId,
+        invoiceId:invoicename,
         invoiceDate:req.body.invoiceDate,
         DueDate:req.body.DueDate,
         recipientname:req.body.recipientname,
@@ -29,6 +43,10 @@ router.post('/',async (req,res)=>{
     })
     try{
         let newInv= await inv.save()
+        if(req.body.type=="Inv"){
+            cconst.invoice_count=cconst.invoice_count+1
+            await cconst.save()
+        }
         res.status(201).json({"_id":newInv.id})
         
     }
