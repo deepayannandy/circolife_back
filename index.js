@@ -29,6 +29,7 @@ const queryRouter= require("./routes/query")
 const devicePaymentsRouter= require("./routes/devicePayments")
 const invoiceRouter= require("./routes/invoice")
 const companyConstRouter= require("./routes/consts")
+const railwayRouter= require("./routes/railwayTest")
 
 app.use("/api/user",userRouter)
 app.use("/api/address",addressRouter)
@@ -40,6 +41,7 @@ app.use("/api/query",queryRouter)
 app.use("/api/devicePayments",devicePaymentsRouter)
 app.use("/api/invoice",invoiceRouter)
 app.use("/api/consts",companyConstRouter)
+app.use("/api/railwaytest",railwayRouter)
 
 app.listen(6622,()=>{
     console.log("Http Server is listning!")
