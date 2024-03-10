@@ -108,7 +108,11 @@ const orderSchema= new mongoos.Schema({
     remainingBalance:{
         type:Number,
         required:false
-    }
+    },
+    deposite:{
+        type:Number,
+        required:false
+    },
 })
 
 module.exports=mongoos.model('Order',orderSchema )
