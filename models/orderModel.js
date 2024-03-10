@@ -104,6 +104,10 @@ const orderSchema= new mongoos.Schema({
     companyname:{
         type:String,
         required:false
+    },
+    remainingBalance:{
+        type:Number,
+        required:false
     }
 })
 

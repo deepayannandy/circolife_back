@@ -52,7 +52,8 @@ router.post('/',async (req,res)=>{
         monthlyPayment_amount:req.body.monthlyPayment_amount,
         companyname:req.body.companyname,
         gst:req.body.gst,
-        billingaddress:req.body.billingaddress
+        billingaddress:req.body.billingaddress,
+        remainingBalance:req.body.remainingBalance
 
     })
     const notification= new notificationsmodel({
