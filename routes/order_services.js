@@ -111,6 +111,23 @@ router.get('/getbyuser/:uid',async (req,res)=>{
     }
 })
 
+router.patch('/:id', getOrder,async(req,res)=>{
+    if(req.body.remainingBalance!=null){
+        res.order.remainingBalance=req.body.remainingBalance;
+    }
+    if(req.body.paymentId!=null){
+        res.order.paymentId=res.order.paymentId+","+req.body.paymentId;
+    }
+    if(req.body.payment_amount!=null){
+        res.order.payment_amount=res.order.payment_amount+req.body.payment_amount;
+    }
+    try{
+        const newOrder=await res.order.save()
+        res.status(201).json({"Update_id":newOrder.id})
+    }catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
 
 //update user
 router.patch('/completeorder/:id', getOrder,async(req,res)=>{
