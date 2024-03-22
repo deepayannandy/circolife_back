@@ -95,7 +95,7 @@ router.post('/',async (req,res)=>{
             text: `Hello ${req.body.Fullname},
 Congratulations on you have successful placed an order at CircoLife. 
 
-Your ${req.body.model} AC will be installed by ${req.body.appointmentDate.split("T")[0]}
+Your ${req.body.model} AC will be installed by ${req.body.appointmentDate.split(" ")[0].split("T")[0]}
 Transaction Id: ${req.body.paymentId}
 Order Id: ${newOrder.id}.
 
@@ -125,11 +125,11 @@ Name: ${order_user.Fullname}
 Phone: ${order_user.mobile}
 Tonnage: ${req.body.model}
 No. of AC's:  1
-Date of Installation :  ${req.body.appointmentDate}
+Date of Installation :  ${req.body.appointmentDate.split(" ")[0].split("T")[0]}
 Address: ${req.body.address}, ${req.body.flat}, ${req.body.city}, ${req.body.state}, ${req.body.pincode}
             
 Duration:  ${req.body.plan_year} Year(s)
-Paid Amount: ${req.body.payment_amount}
+Paid Amount: ${req.body.payment_amount/100}
 Installation Charge: 1500
 Subscription Fee : ${req.body.monthlyPayment_amount} /Month
             
