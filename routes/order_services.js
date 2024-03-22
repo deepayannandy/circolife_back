@@ -7,7 +7,6 @@ const Device_payment_model=require("../models/devicePaymentsModel")
 const nodemailer = require('nodemailer');
 const mongodb=require("mongodb");
 require("dotenv").config()
-const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
