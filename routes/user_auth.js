@@ -10,7 +10,7 @@ process.env.TZ = "Asia/Calcutta";
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'appsdny@gmail.com',
+    user: 'info@circolife.com',
     pass: process.env.MAILER_PASS,
   },
   port:465,
