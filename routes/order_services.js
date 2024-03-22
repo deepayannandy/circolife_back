@@ -7,17 +7,39 @@ const Device_payment_model=require("../models/devicePaymentsModel")
 const nodemailer = require('nodemailer');
 const mongodb=require("mongodb");
 require("dotenv").config()
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'info@circolife.com',
+      pass: process.env.MAILER_PASS,
+    },
+    port:465,
+    host:"smtp.gmail.com"
+  });
+  
+  var maillist = [
+    'vigyan.pathak@circolife.com',
+    'ganesh.kumbhar@circolife.com',
+    'vijay.satle@circolife.com',
+    'vijay.satle@circolife.com',
+  ];
+  var cclist = [
+    'tushar@circolife.com',
+    'abhishek@circolife.com',
+    'ashish@circolife.com',
+    'saurav.agrawal@circolife.com',
+    'devanshu@circolife.com'
+  ];
+  var cclistService = [
+    'tushar@circolife.com',
+  ];
+  var bcclist = [
+    'dnyindia@gmail.com',
+  ];
 
 process.env.TZ = "Asia/Calcutta";
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'appsdny@gmail.com',
-    pass: process.env.MAILER_PASS,
-  },
-  port:465,
-  host:"smtp.gmail.com"
-});
+
 
 //create user
 router.post('/',async (req,res)=>{
@@ -67,8 +89,8 @@ router.post('/',async (req,res)=>{
     try{
         const newOrder=await order.save()
         let newNotification= await notification.save()
-        var regestereduserMail = {
-            from: 'appsdny@gmail.com',
+        var orderUserUpdateMail = {
+            from: 'info@circolife.com',
             to: req.body.email,
             subject: 'Wohoo Order Placed Successfully 🎉 ',
             text: `Hello ${req.body.Fullname},
@@ -81,7 +103,43 @@ Order Id: ${newOrder.id}.
 Regards
 Team CircoLife`      
           };
-          transporter.sendMail(regestereduserMail, function(error, info){
+          transporter.sendMail(orderUserUpdateMail, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
+          var orderUpdateMail = {
+            from: 'info@circolife.com',
+            to: maillist,
+            cc:cclist,
+            bcc:bcclist,
+            subject: `New Subscription Notification: ${order_user.Fullname} Has Joined Circolife!`, 
+            text:`Dear Circolife Team,
+
+We're excited to announce that ${order_user.Fullname} has just subscribed to Circolife through our app! 🎉
+            
+Here are the details of their subscription:
+            
+Name: ${order_user.Fullname}
+Phone: ${order_user.mobile}
+Tonnage: ${req.body.model}
+No. of AC's:  1
+Date of Installation :  ${req.body.appointmentDate}
+Address: ${req.body.address}, ${req.body.flat}, ${req.body.city}, ${req.body.state}, ${req.body.pincode}
+            
+Duration:  ${req.body.plan_year} Year(s)
+Paid Amount: ${req.body.payment_amount}
+Installation Charge: 1500
+Subscription Fee : ${req.body.monthlyPayment_amount} /Month
+            
+Let's gear up to provide the best ever experience to ${order_user.Fullname} with our CircoLife way. 
+            
+Best regards,
+CircoLife Intelligent App`
+        }
+          transporter.sendMail(orderUpdateMail, function(error, info){
             if (error) {
               console.log(error);
             } else {
