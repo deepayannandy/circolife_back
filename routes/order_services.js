@@ -90,7 +90,7 @@ router.post('/',async (req,res)=>{
         let newNotification= await notification.save()
         var orderUserUpdateMail = {
             from: 'info@circolife.com',
-            to: req.body.email,
+            to: order_user.email,
             subject: 'Wohoo Order Placed Successfully 🎉 ',
             text: `Hello ${req.body.Fullname},
 Congratulations on you have successful placed an order at CircoLife. 
@@ -129,7 +129,7 @@ Date of Installation :  ${req.body.appointmentDate.split(" ")[0].split("T")[0]}
 Address: ${req.body.address}, ${req.body.flat}, ${req.body.city}, ${req.body.state}, ${req.body.pincode}
             
 Duration:  ${req.body.plan_year} Year(s)
-Paid Amount: ${req.body.payment_amount/100}
+Paid Amount: ${req.body.payment_amount}
 Installation Charge: 1500
 Subscription Fee : ${req.body.monthlyPayment_amount} /Month
             
