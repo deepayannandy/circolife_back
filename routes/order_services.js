@@ -130,6 +130,7 @@ Address: ${req.body.address}, ${req.body.flat}, ${req.body.city}, ${req.body.sta
             
 Duration:  ${req.body.plan_year} Year(s)
 Paid Amount: ${req.body.payment_amount}
+Remaining Amount: ${req.body.remainingBalance}
 Installation Charge: 1500
 Subscription Fee : ${req.body.monthlyPayment_amount} /Month
             
